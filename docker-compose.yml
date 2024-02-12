@@ -24,7 +24,7 @@ services:
     volumes:
       - ./php/wwwroot:/var/www/html
     ports:
-      - "8000:80"
+      - "9080:80"
     depends_on:
       - db
     tty: true
