@@ -44,5 +44,15 @@ services:
     environment:
       API_USER: Stefano
 
+  java:
+    build:
+      context: ./java
+    ports:
+      - "10000:8080"
+    depends_on:
+      - db
+    tty: true
+    stdin_open: true
+
 volumes:
   pgdata:
