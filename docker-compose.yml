@@ -7,9 +7,11 @@ services:
     image: postgres
     restart: always
     environment:
+      POSTGRES_DB: northwind
       POSTGRES_PASSWORD: example
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./postgresql/northwind.sql:/docker-entrypoint-initdb.d/northwind.sql
 
   adminer:
     image: adminer
@@ -36,7 +38,7 @@ services:
     #volumes:
     #  - ./php:/var/www/html
     ports:
-      - "9000:9000"
+      - "10080:10080"
     depends_on:
       - db
     tty: true
@@ -44,15 +46,17 @@ services:
     environment:
       API_USER: Stefano
 
-  java:
-    build:
-      context: ./java
-    ports:
-      - "10000:8080"
-    depends_on:
-      - db
-    tty: true
-    stdin_open: true
+#  java:
+#    build:
+#      context: ./java
+#    ports:
+#      - "10000:8080"
+#    depends_on:
+#      - db
+#    tty: true
+#    stdin_open: true
+#    profiles:
+#      - java
 
 volumes:
   pgdata:
