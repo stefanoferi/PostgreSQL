@@ -5,4 +5,4 @@ COPY ./src .
 RUN gradle build
     
 EXPOSE 8080
-CMD ["java", "-jar build/demo.jar"]
+CMD ["gradle", "bootRun"]
