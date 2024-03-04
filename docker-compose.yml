@@ -13,11 +13,36 @@ services:
       - pgdata:/var/lib/postgresql/data
       - ./postgresql/northwind.sql:/docker-entrypoint-initdb.d/northwind.sql
 
+  rest:
+    image: postgrest/postgrest
+    ports:
+      - "3000:3000"
+    links:
+      - db:db
+    environment:
+      PGRST_DB_URI: postgres://postgres:example@db:5432/northwind
+      PGRST_DB_SCHEMA: public
+      PGRST_DB_ANON_ROLE: postgres #In production this role should not be the same as the one used for the connection
+      PGRST_SERVER_PROXY_URI: "http://127.0.0.1:3000"
+    depends_on:
+      - db
+      
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+    depends_on:
+      - db
+
+  swagger:
+    image: swaggerapi/swagger-ui
+    ports:
+        - "12080:8080"
+    expose:
+        - "12080"
+    environment:
+        API_URL: http://127.0.0.1:3000/     
 
   php:
     build:
@@ -46,17 +71,15 @@ services:
     environment:
       API_USER: Stefano
 
-#  java:
-#    build:
-#      context: ./java
-#    ports:
-#      - "10000:8080"
-#    depends_on:
-#      - db
-#    tty: true
-#    stdin_open: true
-#    profiles:
-#      - java
+  java:
+    build:
+      context: ./java
+    ports:
+      - "10000:8080"
+    depends_on:
+      - db
+    tty: true
+    stdin_open: true
 
 volumes:
   pgdata:

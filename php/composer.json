@@ -1,0 +1,13 @@
+{
+    "require": {
+        "doctrine/orm": "^3",
+        "doctrine/dbal": "^4",
+        "symfony/cache": "^7"
+    },
+    "autoload": {
+        "psr-0": {"": "src/"}
+    },
+    "require-dev": {
+        "symfony/maker-bundle": "^1.54"
+    }
+}
